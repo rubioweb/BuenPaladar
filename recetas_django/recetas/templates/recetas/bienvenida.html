@@ -1,0 +1,20 @@
+{% extends 'recetas/base.html' %} <!-- extendemos la plantilla base para reutilizar su estructura y estilo -->
+
+{% load static %} <!--cargar datos estaticos-->
+
+{% block title %}Bienvenida - Recetas App{% endblock %} <!-- define el título específico de esta pagina -->
+{% block content %}
+<!--contenido principal de la pagina de bienvenida -->
+<div class="text-center"> <!--centra el contenido horizontalmente en la página -->
+    <img src="{% static 'recetas/presentacion.png' %}" alt="Imagen de Bienvenida" class="img-fluid"> <!-- Imagen de presentación -->
+    <h1>Buen Paladar</h1><!-- titulo de la pagina de bienvenida -->
+
+    <!-- botones de navegación -->
+    <div class="mt-4"> <!-- margin top para añadir espacio encima de los botones -->
+        <!--boton para iniciar sesión, redirige a la vista de inicio de sesión -->
+        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a> 
+        <!--boton para registrarse, redirige a la vista de registro -->
+        <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a> 
+    </div>
+</div>
+{% endblock %}

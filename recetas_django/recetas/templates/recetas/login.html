@@ -1,0 +1,14 @@
+{% extends 'recetas/base.html' %} <!-- extiende la plantilla base para mantener la consistencia de la estructura -->
+
+{% block title %}Iniciar Sesión - Recetas App{% endblock %} <!-- define el título de la pagina de inicio de sesión -->
+
+{% block content %}
+<div class="container"> <!--crea un contenedor centrado para mantener el contenido alineado -->
+    <h2>Iniciar Sesión</h2> <!--titulo para la sección de inicio de sesión -->
+    <form method="post"> <!--inicia un formulario HTTP POST para enviar los datos de inicio de sesion -->
+        {% csrf_token %} <!-- protege el formulario contra ataques CSRF -->
+        {{ form.as_p }} <!--renderiza el formulario de inicio de sesión como parrafos -->
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button> <!-- boton para enviar el formulario -->
+    </form>
+</div>
+{% endblock %}
