@@ -1,0 +1,64 @@
+{% extends 'recetas/base.html' %}
+
+{% load static %}
+
+{% block navbar %} <!--para definir las opciones de la barra de navegación de forma dinámica.-->
+    {% if user.is_authenticated %}
+        <!-- pestaña para crear una receta -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'receta_crear' %}">Crear Receta</a>
+        </li>
+        <!--pestaña para ver solo las recetas del usuario-->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'mis_recetas' %}">Mis Recetas</a>
+        </li>
+        <!--pestaña para cerrar sesion-->
+        <li class="nav-item" style="display: flex; align-items: center;">
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0; background: none; border: none; color: inherit; text-decoration: none;">
+                    Cerrar Sesión
+                </button>
+            </form>
+        </li>
+        
+ 
+        
+ 
+ 
+    {% else %}
+        <!--pestaña para iniciar sesion-->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+        </li>
+        <!--pestaña para registrarse-->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <h2 class="text-center mb-4">Recetas</h2>
+    <div class="container">
+        <div class="row">
+            {% for receta in recetas %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <!-- Verificar si la receta tiene imagen -->
+                        {% if receta.imagen %}
+                            <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ receta.nombre }}</h5>
+                            <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

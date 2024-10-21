@@ -1,0 +1,58 @@
+{% extends 'recetas/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ receta.nombre }}</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Verificar si la receta tiene imagen -->
+                {% if receta.imagen %}
+                    <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="img-fluid">
+                {% else %}
+                    <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="img-fluid">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <p><strong>Ingredientes:</strong> {{ receta.ingredientes }}</p>
+                <p><strong>Elaboración:</strong> {{ receta.elaboracion }}</p>
+                <p><strong>Tiempo de Preparación:</strong> {{ receta.tiempo_preparacion }} minutos</p>
+                <p><strong>Comensales:</strong> {{ receta.comensales }}</p>
+                <p><strong>Dificultad:</strong> {{ receta.dificultad }}</p>
+                <p><strong>Categoría:</strong> {{ receta.categoria }}</p>
+                <p><strong>Etiquetas:</strong> {{ receta.etiquetas.all|join:", " }}</p>
+                <p><strong>Autor:</strong> {{ receta.autor.username }}</p> 
+                <p><strong>Fecha de Creación:</strong> {{ receta.fecha_creacion }}</p>
+            </div>
+        </div>
+                <!-- Sección de comentarios -->
+        <div class="mt-5">
+            <h3>Comentarios</h3>
+
+            <!-- Mostrar los comentarios existentes -->
+            {% if receta.comentarios.exists %}
+                <ul class="list-group">
+                    {% for comentario in receta.comentarios.all %}
+                        <li class="list-group-item">
+                            <p><strong>{{ comentario.autor.username }}:</strong> {{ comentario.texto }}</p>
+                            <p class="text-muted">{{ comentario.fecha_creacion|date:"d M Y, H:i" }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+            {% endif %}
+        </div>
+
+        <!-- Formulario para agregar un nuevo comentario -->
+        <div class="mt-5">
+            <h4>Añadir un comentario</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }} <!-- Renderizamos el formulario -->
+                <button type="submit" class="btn btn-primary">Enviar comentario</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

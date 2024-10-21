@@ -1,0 +1,30 @@
+{% extends 'recetas/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Mis Recetas</h2>
+    <div class="container">
+        <div class="row">
+            {% if recetas %}
+                {% for receta in recetas %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            {% if receta.imagen %}
+                                <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ receta.nombre }}</h5>
+                                <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No tienes recetas creadas aún.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

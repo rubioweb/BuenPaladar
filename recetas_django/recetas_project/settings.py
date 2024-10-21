@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-me)^vidcz99%o9gy1_sz3=f!-1%*s26j_#13yb+4yr@3-qbe#@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,3 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'recetas'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+#configuracion de archivo media 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
