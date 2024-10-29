@@ -3,9 +3,11 @@ from django.views.generic import TemplateView,CreateView,ListView,DetailView
 from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import reverse_lazy,reverse
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Receta
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from .models import Receta,Comentario,Etiqueta
 from .forms import RecetaForm, ComentarioForm
+from django.contrib import messages
+from django.views.generic.edit import UpdateView, DeleteView
 
 
 # vista bienvenida
@@ -31,32 +33,44 @@ class CerrarSesion(LogoutView):
 
 
 #vista de todas las recetas
-class RecetaListView(LoginRequiredMixin, ListView):
+class RecetaListView(ListView): #####aki hay cambio_para que se vean
     model = Receta #modelo que vamos a listar
     template_name = 'recetas/receta_list.html'  # plantilla que se usara para mostrar las recetas
     context_object_name = 'recetas' #nombre del contexto para acceder a las recetas en la plantilla
 
     #configuración para que solo usuarios autenticados puedan ver esta vista
-    login_url = 'login'  # URL a la que se redirige si el usuario no está autenticado
+    #login_url = 'login'  # URL a la que se redirige si el usuario no está autenticado
 
 
-
-class RecetaDetailView(DetailView):
+# los detalles de una receta
+class RecetaDetailView(DetailView): ##########
     model = Receta
     template_name = 'recetas/receta_detalle.html'
-    context_object_name = 'receta' #nombre que usaremos en la plantilla para acceder a la receta
+    context_object_name = 'receta' 
 
     # Sobrescribimos el metodo get_context_data para incluir el formulario de comentarios
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = ComentarioForm()  #agregamos el formulario de comentarios al contexto
+        #context['form'] = ComentarioForm()  #agregamos el formulario de comentarios al contexto
         context['comentarios'] = self.object.comentarios.all()  # cargamos los comentarios de la receta
-        return context
+
+             # Si el usuario está autenticado, mostramos el formulario de comentarios
+        if self.request.user.is_authenticated:
+            context['form'] = ComentarioForm()  #agregamos el formulario de comentarios al contexto
+        else:
+            context['form'] = None  # No mostramos el formulario si no está autenticado
+
+        return context      
 
     #sobrescribimos el metodo post para manejar el envío de formularios de comentarios
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()  #obtenemos la receta actual
         form = ComentarioForm(request.POST)
+
+                # Si el usuario no está autenticado, mostramos un mensaje para que inicie sesión
+        if not request.user.is_authenticated:
+            messages.warning(request, "Regístrate o inicia sesión para dejar un comentario.")
+            return redirect('login')
 
         if form.is_valid():
             comentario = form.save(commit=False)
@@ -69,7 +83,17 @@ class RecetaDetailView(DetailView):
         context = self.get_context_data()
         context['form'] = form #pasamos el formulario con los errores
         return self.render_to_response(context)
+    
+     #contador de visitas
 
+    def get_object(self, queryset=None):
+        receta = super().get_object(queryset)
+        
+        #incrementar el conteo de visitas
+        receta.visitas += 1
+        receta.save()
+
+        return receta
 
 
 
@@ -89,6 +113,7 @@ class RecetaCrearView(LoginRequiredMixin, CreateView):
     form_class = RecetaForm  #esto hay que importarlo
     template_name = 'recetas/receta_form.html'
     success_url = reverse_lazy('recetas')  #redirige a la lista de recetas después de crear una receta
+    login_url = 'login'   #redirige a la vista de login 
 
     def form_valid(self, form):
         form.instance.autor = self.request.user #asignar el usuario autenticado como el creador de la receta
@@ -102,9 +127,55 @@ class MisRecetasListView(LoginRequiredMixin, ListView):
     model = Receta
     template_name = 'recetas/mis_recetas.html'
     context_object_name = 'recetas'
+    login_url = 'login'  #redirige a login
 
     def get_queryset(self):
         #filtra las recetas por el usuario autenticado
         return Receta.objects.filter(autor=self.request.user)
     
 
+#vista para buscar recetas por etiquetas
+
+class BuscarRecetasPorEtiqueta(ListView):
+    model = Receta
+    template_name = 'recetas/buscar_resultados.html'
+    context_object_name = 'recetas'
+
+    def get_queryset(self):
+        etiqueta_id = self.request.GET.get('etiqueta')
+        if etiqueta_id:
+            return Receta.objects.filter(etiquetas__id=etiqueta_id)
+        return Receta.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['etiquetas'] = Etiqueta.objects.all()
+        return context
+    
+
+    #vista para editar receta
+class RecetaUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Receta
+    form_class = RecetaForm
+    template_name = 'recetas/receta_form.html'
+    success_url = reverse_lazy('mis_recetas')
+
+    # Verificar que el usuario que intenta editar sea el autor de la receta
+    def test_func(self):
+        receta = self.get_object()
+        return self.request.user == receta.autor
+
+
+
+    # vista para borrar la receta
+
+class RecetaDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+        
+    model = Receta
+    template_name = 'recetas/receta_confirm_delete.html'
+    success_url = reverse_lazy('mis_recetas')
+
+    # Verificar que el usuario que intenta eliminar sea el autor de la receta
+    def test_func(self):
+        receta = self.get_object()
+        return self.request.user == receta.autor

@@ -34,6 +34,7 @@ class Receta(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     #autor de la receta vinculado al modelo de usuario de Django
     autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recetas')
+    visitas = models.IntegerField(default=0)
 
    
     def __str__(self):

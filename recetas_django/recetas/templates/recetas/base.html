@@ -19,10 +19,32 @@
                 <ul class="navbar-nav ms-auto"><!--lista de elementos de navegación alineados a la derecha--clase ms-auto (margen izquierdo automático) -->
                     {% block navbar %} <!--bloque que permite incluir contenido dinámico en la barra de navegacion, definido en las vistas -->
                     {% endblock %}
+                                     <!-- Formulario de búsqueda -->
+                    <form class="d-flex ms-3" method="get" action="{% url 'buscar_etiquetas' %}">
+                        <select name="etiqueta" class="form-select">
+                            <option value="">Selecciona una etiqueta</option>
+                            {% for etiqueta in etiquetas %}
+                                <option value="{{ etiqueta.id }}">{{ etiqueta.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-outline-success ms-2" type="submit">Buscar</button>
+                    </form>
                 </ul>
             </div>
         </div>
     </nav>
+        <!-- Bloque para mostrar mensajes flash de Django -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
       <!--contenedor principal con margen superior de 4 unidades (mt-4) para crear separacion con la barra de navegacion -->
     <div class="container mt-4">
         {% block content %}

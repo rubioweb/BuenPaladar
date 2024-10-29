@@ -1,0 +1,28 @@
+{% extends 'recetas/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h2>Recetas encontradas</h2>
+    {% if recetas %}
+        <div class="row">
+            {% for receta in recetas %}
+                <div class="col-md-4">
+                    <div class="card">
+                        {% if receta.imagen %}
+                            <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="card-img-top">
+                        {% else %}
+                            <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ receta.nombre }}</h5>
+                            <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No se encontraron recetas con esta etiqueta.</p>
+    {% endif %}
+{% endblock %}

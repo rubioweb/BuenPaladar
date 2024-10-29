@@ -18,6 +18,8 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ receta.nombre }}</h5>
                                 <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver detalles</a>
+                                <a href="{% url 'receta_editar' receta.pk %}" class="btn btn-warning">Editar</a>
+                                <a href="{% url 'receta_eliminar' receta.pk %}" class="btn btn-danger" >Eliminar</a>
                             </div>
                         </div>
                     </div>
@@ -28,3 +30,6 @@
         </div>
     </div>
 {% endblock %}
+
+
+<!--onclick="return confirm('¿Estás seguro de que deseas eliminar esta receta?');"-->

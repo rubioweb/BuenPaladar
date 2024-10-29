@@ -6,15 +6,19 @@
 {% block content %}
 <!--contenido principal de la pagina de bienvenida -->
 <div class="text-center"> <!--centra el contenido horizontalmente en la página -->
-    <img src="{% static 'recetas/presentacion.png' %}" alt="Imagen de Bienvenida" class="img-fluid"> <!-- Imagen de presentación -->
     <h1>Buen Paladar</h1><!-- titulo de la pagina de bienvenida -->
+    <h3>Crea tus propias recetas</h3>
+    <h3>Crea tus propias recetas</h3>
+    <img src="{% static 'recetas/presentacion.png' %}" alt="Imagen de Bienvenida" class="img-fluid"> <!-- Imagen de presentación -->
+    
 
-    <!-- botones de navegación -->
-    <div class="mt-4"> <!-- margin top para añadir espacio encima de los botones -->
-        <!--boton  iniciar sesión redirige a la vista de inicio de sesión -->
+          <!-- botones de navegación 
+    <div class="mt-4"> <!-- margin top para añadir espacio encima de los botones 
+        <!--boton  iniciar sesión redirige a la vista de inicio de sesión 
         <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a> 
-        <!--boton  registrarse redirige a la vista de registro -->
+        <!--boton  registrarse redirige a la vista de registro 
         <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a> 
-    </div>
+    </div> 
+-->
 </div>
 {% endblock %}
