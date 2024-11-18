@@ -8,7 +8,7 @@
     <form method="post"> <!--inicia un formulario HTTP POST para enviar los datos de inicio de sesion -->
         {% csrf_token %}       <!-- protege el formulario contra ataques CSRF -->
         {{ form.as_p }} <!--renderiza el formulario de inicio de sesión como parrafos -->
-        <button type="submit" class="btn btn-primary">Iniciar Sesión</button> <!-- boton para enviar el formulario -->
+        <button type="submit" class="btn btn-primary"  >Iniciar Sesión</button> <!-- boton para enviar el formulario -->
     </form>
 </div>
 {% endblock %}

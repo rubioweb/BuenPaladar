@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView,CreateView,ListView,DetailView
 from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import reverse_lazy,reverse
@@ -8,16 +8,25 @@ from .models import Receta,Comentario,Etiqueta
 from .forms import RecetaForm, ComentarioForm
 from django.contrib import messages
 from django.views.generic.edit import UpdateView, DeleteView
+from django.views import View
+from .serializador import RecetaSerializer
+from rest_framework import generics
 
 
-# vista bienvenida
-
+# vista bienvenidasour
 class Bienvenidaview(TemplateView):
     template_name = 'recetas/bienvenida.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['recetas'] = Receta.objects.all()  # Agregamos todas las recetas al contexto
+        return context
+    
 
 #vista para iniciar sesion login
 class IniciarSesion(LoginView):
     template_name = 'recetas/login.html'
+  
 
 
 #vista para registrarse
@@ -84,7 +93,7 @@ class RecetaDetailView(DetailView): ##########
         context['form'] = form #pasamos el formulario con los errores
         return self.render_to_response(context)
     
-     #contador de visitas
+     #contador de visitas   (python manage.py recetas_populare)
 
     def get_object(self, queryset=None):
         receta = super().get_object(queryset)
@@ -179,3 +188,23 @@ class RecetaDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         receta = self.get_object()
         return self.request.user == receta.autor
+
+# vista para dar me_gusta
+
+class DarMeGusta(View):
+    def post(self, request, receta_id):
+        receta = get_object_or_404(Receta, id=receta_id)
+
+        if request.user in receta.me_gusta.all():
+            receta.me_gusta.remove(request.user)  # Si ya dio "me gusta", lo quitamos
+        else:
+            receta.me_gusta.add(request.user)  # Si no, agregamos el "me gusta"
+
+        return redirect('receta_detalle', pk=receta.id)
+    
+
+# API   http://localhost:8000/api/recetas/
+ 
+class RecetaListAPIView(generics.ListAPIView):
+    queryset = Receta.objects.all()
+    serializer_class = RecetaSerializer

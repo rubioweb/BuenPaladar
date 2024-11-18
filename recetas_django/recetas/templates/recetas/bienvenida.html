@@ -6,19 +6,75 @@
 {% block content %}
 <!--contenido principal de la pagina de bienvenida -->
 <div class="text-center"> <!--centra el contenido horizontalmente en la página -->
-    <h1>Buen Paladar</h1><!-- titulo de la pagina de bienvenida -->
-    <h3>Crea tus propias recetas</h3>
-    <h3>Crea tus propias recetas</h3>
-    <img src="{% static 'recetas/presentacion.png' %}" alt="Imagen de Bienvenida" class="img-fluid"> <!-- Imagen de presentación -->
+    <h1 class="display-4 text-center" style="font-family: 'Georgia', serif; color: #B22222; font-weight: bold; margin-top: 20px;">
+        Buen Paladar
+    </h1>
+    <!-- titulo de la pagina de bienvenida -->
+  <!-- Imagen de presentación -->
     
 
-          <!-- botones de navegación 
-    <div class="mt-4"> <!-- margin top para añadir espacio encima de los botones 
-        <!--boton  iniciar sesión redirige a la vista de inicio de sesión 
-        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a> 
-        <!--boton  registrarse redirige a la vista de registro 
-        <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a> 
-    </div> 
--->
 </div>
+
+<div class="container mt-4">
+    <div class="row text-center">
+        <!-- Primera columna -->
+        <div class="col-md-4" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;">
+            <h3>Comparte tus recetas</h3>
+            <img src="{% static 'recetas/compartir.png' %}" alt="Imagen de Compartir Recetas" class="img-fluid" width="200" height="200">
+        </div>
+
+        <!-- Segunda columna -->
+        <div class="col-md-4" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;">
+            <h3>Crea tus propias recetas</h3>
+            <img src="{% static 'recetas/crea.png' %}" alt="Imagen de Crear Recetas" class="img-fluid" width="200" height="200">
+        </div>
+
+        <!-- Tercera columna -->
+        <div class="col-md-4" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;">
+            <h3>Comenta las recetas </h3>
+            <img src="{% static 'recetas/comentaa.png' %}" alt="Imagen de Comentar Recetas" class="img-fluid" width="200" height="200">
+        </div>
+    </div>
+</div>
+
+
+    <!-- Contenedor centrado para el texto sobre el carrusel -->
+<div class="d-flex justify-content-center mt-5">
+    <h4 style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;">
+        ¡No esperes más entra y regístrate!
+    </h4>
+</div>
+
+<div id="recetasCarousel" class="carousel slide mt-5 mx-auto" data-bs-ride="carousel" style="width: 80%; max-width: 600px;">
+    <!-- Indicadores del carrusel -->
+    <div class="carousel-indicators">
+        {% for receta in recetas %}
+            <button type="button" data-bs-target="#recetasCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+
+    <!-- Contenido del carrusel -->
+    <div class="carousel-inner">
+        {% for receta in recetas %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{% url 'receta_detalle' receta.pk %}">
+                    <img src="{{ receta.imagen.url }}" class="d-block w-100" alt="Imagen de {{ receta.nombre }}" style="height: 300px; object-fit: cover;">
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Controles de navegación -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#recetasCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#recetasCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+
+
 {% endblock %}

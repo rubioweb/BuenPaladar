@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'recetas'
+    'recetas',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

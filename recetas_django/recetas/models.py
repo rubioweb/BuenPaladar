@@ -35,6 +35,10 @@ class Receta(models.Model):
     #autor de la receta vinculado al modelo de usuario de Django
     autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recetas')
     visitas = models.IntegerField(default=0)
+    me_gusta = models.ManyToManyField(User, related_name='me_gusta', blank=True)
+
+    def total_me_gusta(self):
+        return self.me_gusta.count()
 
    
     def __str__(self):

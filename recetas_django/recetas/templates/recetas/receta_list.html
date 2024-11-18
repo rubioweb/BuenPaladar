@@ -6,17 +6,17 @@
     {% if user.is_authenticated %}
         <!-- pestaña para crear una receta -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'receta_crear' %}">Crear Receta</a>
+            <a class="nav-link" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;" href="{% url 'receta_crear' %}" >Crear Receta</a>
         </li>
         <!--pestaña para ver solo las recetas del usuario-->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'mis_recetas' %}">Mis Recetas</a>
+            <a class="nav-link" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;" href="{% url 'mis_recetas' %}" >Mis Recetas</a>
         </li>
         <!--pestaña para cerrar sesion-->
         <li class="nav-item" style="display: flex; align-items: center;">
             <form method="POST" action="{% url 'logout' %}" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0; background: none; border: none; color: inherit; text-decoration: none;">
+                <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0; background: none; border: none; color:  #B22222;; text-decoration: none;">
                     Cerrar Sesión
                 </button>
             </form>
@@ -29,19 +29,22 @@
     {% else %}
         <!--pestaña para iniciar sesion-->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+            <a class="nav-link" href="{% url 'login' %}" style="color: #B22222;; font-family: Arial, sans-serif; font-weight: bold;"> Iniciar Sesión</a>
         </li>
         <!--pestaña para registrarse-->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+            <a class="nav-link" href="{% url 'register' %}" style="color:  #B22222;; font-family: Arial, sans-serif; font-weight: bold;"> Registrarse</a>
         </li>
     {% endif %}
 {% endblock %}
 
 
 {% block content %}
-<h2 class="text-center mb-4">Buen Paladar</h2>
-    <h2 class="text-center mb-4">Recetas</h2>
+<h1 class="display-4 text-center" style="font-family: 'Georgia', serif; color: #B22222; font-weight: bold; margin-top: 20px;">
+    Buen Paladar
+</h1>
+
+    <h2 class="text-center mb-4" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;"> Recetas</h2>
     <div class="container">
         <div class="row">
             {% for receta in recetas %}
@@ -56,6 +59,10 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ receta.nombre }}</h5>
                             <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver detalles</a>
+                            <div class="mt-2 d-inline-block">
+                                <span class="me-gusta-icon">❤️</span>
+                                <span>{{ receta.total_me_gusta }}</span> <!-- Conteo de me gusta -->
+                            </div>
                         </div>
                     </div>
                 </div>

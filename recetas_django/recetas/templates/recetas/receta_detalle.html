@@ -4,33 +4,56 @@
 
 {% block content %}
     <div class="container">
-        <h2>{{ receta.nombre }}</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Verificar si la receta tiene imagen -->
-                {% if receta.imagen %}
-                    <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="img-fluid">
-                {% else %}
-                    <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="img-fluid">
-                {% endif %}
-            </div>
-            <div class="col-md-6">
-                <p><strong>Ingredientes:</strong> {{ receta.ingredientes }}</p>
-                <p><strong>Elaboración:</strong> {{ receta.elaboracion }}</p>
-                <p><strong>Tiempo de Preparación:</strong> {{ receta.tiempo_preparacion }} minutos</p>
-                <p><strong>Comensales:</strong> {{ receta.comensales }}</p>
-                <p><strong>Dificultad:</strong> {{ receta.dificultad }}</p>
-                <p><strong>Categoría:</strong> {{ receta.categoria }}</p>
-                <p><strong>Etiquetas:</strong> {{ receta.etiquetas.all|join:", " }}</p>
-                <p><strong>Autor:</strong> {{ receta.autor.username }}</p> 
-                <p><strong>Fecha de Creación:</strong> {{ receta.fecha_creacion }}</p>
+        <!-- Título de la receta -->
+        <h2 class="text-center my-4" style="color: #B22222; font-family: Arial, sans-serif; font-weight: bold;">{{ receta.nombre }}</h2>
+        
+        <!-- Contenedor principal -->
+        <div class="card shadow-lg mb-5">
+            <div class="row g-0">
+                <!-- Imagen de la receta -->
+                <div class="col-md-6">
+                    <div class="p-3">
+                        {% if receta.imagen %}
+                            <img src="{{ receta.imagen.url }}" alt="{{ receta.nombre }}" class="img-fluid rounded">
+                        {% else %}
+                            <img src="{% static 'recetas/img/placeholder.png' %}" alt="Imagen no disponible" class="img-fluid rounded">
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Detalles de la receta -->
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <p><strong>Ingredientes:</strong> {{ receta.ingredientes }}</p>
+                        <p><strong>Elaboración:</strong> {{ receta.elaboracion }}</p>
+                        <p><strong>Tiempo de Preparación:</strong> {{ receta.tiempo_preparacion }} minutos</p>
+                        <p><strong>Comensales:</strong> {{ receta.comensales }}</p>
+                        <p><strong>Dificultad:</strong> {{ receta.dificultad }}</p>
+                        <p><strong>Categoría:</strong> {{ receta.categoria }}</p>
+                        <p><strong>Etiquetas:</strong> {{ receta.etiquetas.all|join:", " }}</p>
+                        <p><strong>Autor:</strong> {{ receta.autor.username }}</p> 
+                        <p><strong>Fecha de Creación:</strong> {{ receta.fecha_creacion|date:"d M Y" }}</p>
+                    </div>
+                </div>
             </div>
         </div>
-                <!-- Sección de comentarios -->
-        <div class="mt-5">
-            <h3>Comentarios</h3>
 
-            <!-- Mostrar los comentarios existentes -->
+        <!-- Sección de "Me gusta" -->
+        <div class="text-center mb-5">
+            <p>Si te gustó, dale al link</p>
+            <form method="POST" action="{% url 'dar_me_gusta' receta.id %}">
+                {% csrf_token %}
+                <button type="submit" style="border: none; background: none;">
+                    <img src="{% static 'recetas/me-gusta.png' %}" alt="Me gusta" style="width: 32px; height: 32px;">
+                </button>
+            </form>
+            <p><strong>Me gusta:</strong> {{ receta.me_gusta.count }}</p>
+        </div>
+
+        <!-- Sección de comentarios -->
+        <div class="card shadow-lg p-4 mb-5">
+            <h3 class="text-center" style="color: #B22222;">Comentarios</h3>
+
+            <!-- Comentarios existentes -->
             {% if receta.comentarios.exists %}
                 <ul class="list-group">
                     {% for comentario in receta.comentarios.all %}
@@ -41,18 +64,21 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                <p class="text-muted text-center">No hay comentarios aún. ¡Sé el primero en comentar!</p>
             {% endif %}
         </div>
 
-        <!-- Formulario para agregar un nuevo comentario -->
-        <div class="mt-5">
-            <h4>Añadir un comentario</h4>
+        <!-- Formulario para añadir un comentario -->
+        <div class="card shadow-lg p-4">
+            <h4 class="text-center mb-4" style="color: #B22222;">Añadir un comentario</h4>
             <form method="POST">
                 {% csrf_token %}
-                {{ form.as_p }} <!-- Renderizamos el formulario -->
-                <button type="submit" class="btn btn-primary">Enviar comentario</button>
+                {{ form.as_p }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-50">Enviar comentario</button>
+                </div>
             </form>
         </div>
     </div>
 {% endblock %}
+
