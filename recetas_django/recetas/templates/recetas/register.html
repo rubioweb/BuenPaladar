@@ -1,14 +1,30 @@
-{% extends 'recetas/base.html' %} <!--extiende la plantilla base para reutilizar la estructura y estilo general -->
+{% extends 'recetas/base.html' %}
 
-{% block title %}Registrarse - Recetas App{% endblock %} <!-- título  para la página de registro -->
+{% block title %}Registrarse - Buen Paladar{% endblock %}
 
 {% block content %}
-<div class="container"> <!--contenedor para centrar el contenido en la pagina -->
-    <h2>Registrarse</h2> <!--titulo para la sección de registro -->
-    <form method="post"><!--formulario para enviar datos de registro usando método POST -->
-        {% csrf_token %} <!--token de protección CSRF para el formulario -->
-        {{ form.as_p }} <!--renderiza el formulario de registro como parrafos -->
-        <button type="submit" class="btn btn-primary">Registrarse</button> <!-- boto de envío del formulario -->
-    </form>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+        <!-- Título del formulario -->
+        <h2 class="text-center mb-4" style="color: #B22222; font-family: Arial, sans-serif; font-weight: bold;">
+            ¡Crea tu Cuenta!
+        </h2>
+        
+        <!-- Formulario -->
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <!-- Botón de envío -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-success w-100">Registrarse</button>
+            </div>
+        </form>
+        
+        <!-- Enlace para iniciar sesión -->
+        <div class="text-center mt-3">
+            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}" style="color: #B22222; text-decoration: underline;">Inicia sesión aquí</a></p>
+        </div>
+    </div>
 </div>
 {% endblock %}

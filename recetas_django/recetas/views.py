@@ -106,16 +106,6 @@ class RecetaDetailView(DetailView): ##########
 
 
 
-
-'''
-# detalles de las recetas
-class RecetaDetailView(DetailView):
-    model = Receta
-    template_name = 'recetas/receta_detalle.html'
-    context_object_name = 'receta'
-'''
-
-
 #vista para crear una receta
 class RecetaCrearView(LoginRequiredMixin, CreateView):
     model = Receta
