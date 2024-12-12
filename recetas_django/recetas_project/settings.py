@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-me)^vidcz99%o9gy1_sz3=f!-1%*s26j_#13yb+4yr@3-qbe#@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'buenpaladar.duckdns.org',
+    '127.0.0.1',
+    'localhost'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://buenpaladar.duckdns.org'
+]
 
 
 # Application definition
@@ -119,11 +127,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-import io
+import os
 
-STATIC_URL = '/static/'
-STATICFILE_DIR = [os.path.join(BASE_DIR, 'recetas/static')]
-
+STATICFILES_DIRS = [
+    "/home/ubuntu/BuenPaladar/recetas_django/recetas/static/",
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -137,4 +145,8 @@ LOGOUT_REDIRECT_URL = 'home'
 #configuracion de archivo media 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = '/home/ubuntu/BuenPaladar/recetas_django/media/'
+STATIC_ROOT = '/home/ubuntu/BuenPaladar/recetas_django/recetas/static/'
+
