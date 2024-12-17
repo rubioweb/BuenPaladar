@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     'localhost'
 ]
 
+
 CSRF_TRUSTED_ORIGINS = [
     'https://buenpaladar.duckdns.org'
 ]
@@ -127,11 +128,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-import os
+import io
 
-STATICFILES_DIRS = [
-    "/home/ubuntu/BuenPaladar/recetas_django/recetas/static/",
-]
+STATIC_URL = '/static/'
+STATICFILE_DIR = [os.path.join(BASE_DIR, 'recetas/static')]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -145,8 +146,4 @@ LOGOUT_REDIRECT_URL = 'home'
 #configuracion de archivo media 
 
 MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = '/home/ubuntu/BuenPaladar/recetas_django/media/'
-STATIC_ROOT = '/home/ubuntu/BuenPaladar/recetas_django/recetas/static/'
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

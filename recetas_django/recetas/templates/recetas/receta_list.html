@@ -22,10 +22,6 @@
             </form>
         </li>
         
- 
-        
- 
- 
     {% else %}
         <!--pestaña para iniciar sesion-->
         <li class="nav-item">
@@ -40,9 +36,6 @@
 
 
 {% block content %}
-<h1 class="display-4 text-center" style="font-family: 'Georgia', serif; color: #B22222; font-weight: bold; margin-top: 20px;">
-    Buen Paladar
-</h1>
 
     <h2 class="text-center mb-4" style="color:  #B22222; font-family: Arial, sans-serif; font-weight: bold;"> Recetas</h2>
     <div class="container">
@@ -63,6 +56,9 @@
                                 <span class="me-gusta-icon">❤️</span>
                                 <span>{{ receta.total_me_gusta }}</span> <!-- Conteo de me gusta -->
                             </div>
+                            <p class="mt-2 text-muted" style="font-size: 0.9rem;">
+                                Creada por: <strong>{{ receta.autor.username }}</strong>
+                            </p>
                         </div>
                     </div>
                 </div>

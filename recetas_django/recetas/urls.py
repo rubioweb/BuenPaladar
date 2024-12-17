@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Bienvenidaview,IniciarSesion,RegistroUsuario,CerrarSesion,RecetaListView,RecetaDetailView,RecetaCrearView,MisRecetasListView,BuscarRecetasPorEtiqueta,RecetaUpdateView,RecetaDeleteView,DarMeGusta,RecetaListAPIView
+from .views import Bienvenidaview,IniciarSesion,RegistroUsuario,CerrarSesion,RecetaListView,RecetaDetailView,RecetaCrearView,MisRecetasListView,BuscarRecetasPorEtiqueta,RecetaUpdateView,RecetaDeleteView,DarMeGusta,RecetaListAPIView,BuscarPorIngredientes
 
 
 urlpatterns =[
@@ -17,6 +17,8 @@ urlpatterns =[
     path('receta/<int:pk>/eliminar/', RecetaDeleteView.as_view(), name='receta_eliminar'),
     path('recetas/<int:receta_id>/me_gusta/', DarMeGusta.as_view(), name='dar_me_gusta'),
     path('api/recetas/', RecetaListAPIView.as_view(), name='api_recetas_list'),
+    path('buscar-ingredientes/', BuscarPorIngredientes.as_view(), name='buscar_ingredientes'),
+   
 
 
 ]

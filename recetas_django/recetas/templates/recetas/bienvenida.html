@@ -5,20 +5,6 @@
 {% block title %}Bienvenida - Buen Paladar{% endblock %}
 
 
-{% block navbar_extra %}
-<!-- Agregamos el mensaje junto al enlace 'RECETAS' -->
-<span class="ms-3" style="color: #B22222; font-family: Arial, sans-serif; font-weight: bold;">
-    ¡Únete a la comunidad de Buen Paladar! 
-    <a href="{% url 'recetas' %}" style="text-decoration: none;">
-        <span style="font-size: 1.5em; font-weight: bold; color: #B22222;">→</span> Ver recetas
-    </a>
-</span>
-{% endblock %}
-
-
-
-
-
 
 {% block content %}
 <!-- Encabezado principal -->
@@ -26,8 +12,14 @@
     <h1 class="display-4" style="font-family: 'Georgia', serif; color: #B22222; font-weight: bold; margin-bottom: 20px;">
         ¡Bienvenidos a Buen Paladar!
     </h1>
-    <p class="lead" style="font-family: Arial, sans-serif; color: #333;">
+    <p class="lead" style="font-family: Arial, sans-serif; color: #B22222;">
         Comparte, crea y comenta las mejores recetas desde la comodidad de tu hogar.
+    </p>
+    <p class="lead mt-3" style="font-family: Arial, sans-serif; font-weight: bold; color: #B22222;">
+        ¡Únete a la comunidad de Buen Paladar! 
+        <a href="{% url 'register' %}" style="text-decoration: none; color: #fc0505;">
+            <span style="font-size: 1.5em; font-weight: bold;">→</span> REGISTRATE
+        </a>
     </p>
 </div>
 
@@ -55,7 +47,6 @@
 </div>
 
 <!-- Llamado a la acción -->
- 
 <div class="text-center my-5">
     <h4 style="color: #B22222; font-family: Arial, sans-serif; font-weight: bold;">
         ¡No esperes más, regístrate ahora y empieza a disfrutar!

@@ -198,3 +198,21 @@ class DarMeGusta(View):
 class RecetaListAPIView(generics.ListAPIView):
     queryset = Receta.objects.all()
     serializer_class = RecetaSerializer
+
+
+# vista para filtrar por busqueda
+class BuscarPorIngredientes(ListView):
+    model = Receta
+    template_name = 'recetas/recetas_list.html'  # Uso la misma plantilla
+    context_object_name = 'recetas'
+
+    def get_queryset(self):
+        # Obtener el término de búsqueda desde los parámetros GET
+        ingrediente = self.request.GET.get('ingrediente', '')
+        if ingrediente:
+            # Filtrar recetas que contengan el ingrediente en el campo 'ingredientes'
+            return Receta.objects.filter(ingredientes__icontains=ingrediente)
+        return Receta.objects.all()  # Si no hay búsqueda, devolver todas las recetas
+
+
+
